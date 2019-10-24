@@ -40,7 +40,22 @@ server.route([
             let panjangRequest = request.payload.panjang; //konversi string ke number
             let lebarRequest = request.payload.lebar;
             let hasil = parseInt(panjangRequest) * parseInt(lebarRequest); //bikin variable penampung luas
-            const data = { data: 'rumus persegi',...request.payload,hasil: hasil }//bikin respon berbentuk JSON
+
+            let statusCode = 200;
+            const contentData = {
+                data : 'Hitung luas persegi',
+                panjang : panjangRequest,
+                lebar: lebarRequest,
+                hasil : hasil
+            }
+
+            const data = {
+                statusCode : statusCode,
+                error: '',
+                message: 'hitung luas persegi',
+                content: contentData
+            }
+            // const data = { data: 'rumus persegi',...request.payload,hasil: hasil }//bikin respon berbentuk JSON
             return h.response(data).code(200) //return out pun berupa json
         }
     },
@@ -59,16 +74,20 @@ server.route([
             let angkaRequest = request.payload.angka;
             let hasil = parseInt(angkaRequest);
             
-            let data = {data : 'Data Paa'}
+            let data = {data : ''}
+            let hasilAngka = "";
+           
             console.log(hasil)
             if(hasil % 2 == 0){
                 console.log('genap')
-                  data = { data: 'Data Genap',...request.payload,hasil: hasil}
+                hasilAngka ="genap";
             }else{
                 console.log('ganjil')
-                  data = { data: 'Data Ganjil',...request.payload,hasil: hasil}
+                hasilAngka = "ganjil";
             }
-            return h.response(data).code(200)
+            data = { data: hasil,...request.payload,hasil: hasilAngka }
+            let response = {statusCode : 200, error:"",message: "ganjil genap", content: data};
+            return h.response(response).code(200)
         }
     }
 ]);
